@@ -1,0 +1,171 @@
+version: 2
+
+sources:
+  - name: adventure_works_seeds
+    database: flaviaadventureworks
+    tables:
+      - name: address
+        description: Street address information for customers, employees, and vendors.
+        columns:
+          - name: addressidv
+            description: Primary key for Address records.
+              - unique
+              - not_null
+
+      - name: billofmaterials
+        description: Items required to make bicycles and bicycle subassemblies. It identifies the heirarchical relationship between a parent product and its components.
+        columns:
+          - name: billofmaterialsid
+            description: Primary key for BillOfMaterials records.
+              - unique
+              - not_null
+
+      - name: businessentityaddress
+        description: Cross-reference table mapping customers, vendors, and employees to their addresses.
+        columns:
+          - name: businessentityid
+            description: Primary key. Foreign key to BusinessEntity.BusinessEntityID.
+              - unique
+              - not_null
+          - name: addressid
+            description: Primary key. Foreign key to Address.AddressID.
+              - unique
+              - not_null              
+          - name: addresstypeid
+            description: Primary key. Foreign key to AddressType.AddressTypeID.
+              - not_null   
+
+      - name: countryregion
+        description: Table with countries and their codes.
+        columns:
+          - name: countryregioncode
+            description: Primary key of countryregion
+            tests:
+              - unique
+              - not_null
+
+      - name: customer
+        description: current customer information
+        columns:
+          - name: customerid
+            description: Primary key for customers records.
+            tests:
+              - unique
+              - not_null
+
+      - name: creditcard
+        description: Customer credit card information.
+        columns:
+          - name: creditcardid
+            description: Primary key for CreditCard records.
+            tests:
+              - unique
+              - not_null              
+
+      - name: location
+        description: Product inventory and manufacturing locations.
+        columns:
+          - name: locationid
+            description: Primary key for Location records.
+            tests:
+              - unique
+              - not_null              
+
+      - name: person
+        description: Human beings involved with AdventureWorks employees, customer contacts, and vendor contacts.
+        columns:
+          - name: businessentityid
+            description: Primary key for Person records.
+            tests:
+              - unique
+              - not_null
+
+      - name: product
+        description: Products sold or used in the manufacturing of sold products.
+        columns:
+          - name: productid
+            description: Primary key for products records.
+            tests:
+              - unique
+              - not_null
+
+      - name: productsubcategory
+        description: Product subcategories.
+        columns:
+          - name: productsubcategoryid
+            description: 	Primary key for ProductSubcategory records.
+            tests:
+              - unique
+              - not_null
+
+      - name: productinventory
+        description: Product inventory information.
+        columns:
+          - name: productid
+            description: Primary key for product category records.
+            tests:
+              - not_null
+          - name: locationid
+            description: Inventory location identification number. Foreign key to LocationID smallint Location.LocationID.
+            tests:
+              - not_null                        
+
+      - name: salesorderdetail
+        description: Individual products associated with a specific sales order.
+        columns:
+          - name: salesorderdetailid
+            description: Primary key of sales order detail table.
+            tests:
+              - unique
+              - not_null
+
+      - name: salesorderheader
+        description: General sales order information
+        columns:
+          - name: salesorderid
+            description: Customer purchase order number reference.
+            tests:
+              - unique
+              - not_null
+
+      - name: salesorderheadersalesreason
+        description: Make the relationship between salesorderheader and salesreason.
+        columns:
+          - name: salesreasonid
+            description: Primary key of sales reason order header sales reason table.
+
+      - name: salesreason
+        description: This table contains information associated with the reason for sale.
+        columns:
+          - name: salesreasonid
+            description: Primary key of sales reason table.
+            tests:
+              - unique
+              - not_null
+
+      - name: salesterritory
+        description: Sales territory lookup table.
+        columns:
+          - name: territoryid
+            description: Primary key for SalesTerritory records.
+            tests:
+              - unique
+              - not_null                  
+
+      - name: stateprovince 
+        description: This table contains information about state province.
+        columns:
+          - name: stateprovinceid
+            description: Primary key of sales reason table.
+            tests:
+              - unique
+              - not_null
+
+      - name: store
+        description: Sales territory lookup table.
+        columns:
+          - name: businessentityid
+            description: Primary key. Foreign key to Customer.BusinessEntityID.
+            tests:
+              - unique
+              - not_null                 
