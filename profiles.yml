@@ -1,0 +1,22 @@
+flaviaadventureworks:   
+  target: dev   
+  outputs:      
+    dev:       
+      type: bigquery
+      method: service-account-json
+      project: flaviaadventureworks
+      dataset: db_adventure_works_seeds      
+      threads: 4                      
+      timeout_seconds: 300            
+
+      keyfile_json:                   
+        type: service_account
+        project_id: flaviaadventureworks
+        private_key_id: 6239e562198e12f0adaff56f31ca7a485f3fc4de
+        private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDC5P+AWIuDg+0b\naI8nCibGc44fMStaL4rBzv3iwPavNfY5pLAlra0ZdpM7G0QIgwIYE6EhYVJvEYrj\nnkIqV2RLrl6NXONQXDq3VGNtlmnWUSiAkyJ/6W2L75h4OTiLrGYk9V7u6lwLSPxr\nWT3mNBuc8xlw6ypJg2A8qyvkz37XaPQimEyaOrcmCoechP5NSEINP7bna+V2CZXq\n8xuTl4OBDfCoq0ssldcWbEXYwU4sCTe9PgpENJRWMACo9CTkOrSACCxSzxRogRmh\n5PIyURmE5cbrhYFi6Ck9q+wivhoBxwYa5S2kjd2fpPdBcVvmikmTwYwFXnkjFSwr\nBeVBkVW5AgMBAAECggEADz8o+dpzd6NvfjBs2ooBxI6vtKL9GD4V5dmSpRWhds2K\n6LGIkjoHC7HqDLqyVNQi6s1GUr0xXL0Ll4j+9h8GGqGWhgqZQeUlNshkSuN0fi61\nM3HPRiB10He6/tTDJrIi/4sulRRChSN9k8xUeljjPCEMgXf0Q/ICKlzdvzW4X5OU\naf+/iq3QbBOUMlyX4HOcubftxeQJqYV5yhv5fETX6eiVO7tMWgbzciCul3JOz2jv\nRN/R1OjiKHO7fRSqRXddnnQlCxVp3fKj/Wa6Yx/m2lxX8oOA4mK/aQP4T1hPr3cP\nsjLHbt/MwE8gZnh7LoCcxz8xO5RXhJLOzjNsZXBgMQKBgQDiiVmW0prsoi+AOF/N\n5RrRNPRXBQoD4r/Hd9dIez0GGHLqHNEA56+GHiEK0kKSKyPfnPzKJRfsgV+8qcyC\n51vKLloLCIMwC+/NMFdUqO3CKkjL856qCaPoUAZLkZ0os9gXOx3mpuUDGM+YiQ9j\ntPkSZxrgvd92uJ8Zv1ZLXby//QKBgQDcPhyHnxydiDMYRWXWujDgk1sg4SS8sqN3\n44RNUNwagZi4vKjNuSAp3pKY1zb4PDo+hUMpnac2eDIVuCTrOydcq/f0SlLVw3OX\no3++st3svJHHvttv2ILUCf09vH0D4+QXAZvBV0aBvh0vtGTiBlYupKNzEUqgTeJO\nFrDR0gQjbQKBgCHfFYUmkkGFcoLCaxi3A856E3qbZ0bzdWdWtNrCinpJ14zHqDxx\nZ94uzRP4IjoGt0NtDqMO7sfPBEiKPujnvOK7EX2K1Uquzjko3DXtWDdq6R2NnJCi\nBl7q8DYGXLBES7AVh7///kf7Qrb071ciLQeiYPNvkGUI78kCwd1c86blAoGAVVy5\ngBM6axBUBW84Zn5p3VEfu+GndH+kfh4vtCvH83oRcGCm6H19Kt06YoTfqFznkj3i\nZynUmncBqothu86ElhWNGCEKdBG6JqbXJ1l6THxV4F5n/LSlGHv6rEf3CF/2krgr\n30bta/H8q/W2OCiOlKt5MmscSn+FXBDNXbWRpw0CgYAInRWZmFJC6a3a3m2tiuuF\nXCQn9SR65rNfVrsYewVSwRJ5ucy1+wnSMQ8WQwlhuk+2YD7XAx/7+CQuZRgQnR3E\n1tOn1aG6eG+bkMG2EIBu7+uMua6xLDEdTm06dAEzQa8tX0/GYDpw2d68ce/ovGt2\nsOWfwq30SggFU1FbiJM5ag==\n-----END PRIVATE KEY-----\n"
+        client_email: flaviaadventureworks-484@flaviaadventureworks.iam.gserviceaccount.com
+        client_id: 106284489430189808681
+        auth_uri: https://accounts.google.com/o/oauth2/auth
+        token_uri: https://oauth2.googleapis.com/token
+        auth_provider_x509_cert_url: https://www.googleapis.com/robot/v1/metadata/x509/flaviaadventureworks-484%40flaviaadventureworks.iam.gserviceaccount.com
+        client_x509_cert_url: googleapis.com  
