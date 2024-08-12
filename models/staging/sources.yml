@@ -89,6 +89,15 @@ sources:
               - unique
               - not_null
 
+      - name: productcategory
+        description: High-level product categorization.
+        columns:
+          - name: productcategoryid
+            description: Primary key for product category records.
+            tests:
+              - unique
+              - not_null              
+
       - name: productsubcategory
         description: Product subcategories.
         columns:
