@@ -1,10 +1,7 @@
 with
  source as (
-    select
-        /* Primary Key */      
+    select    
         addressid as pk_address
-
-        /* Foreign Key */        
         , stateprovinceid as fk_stateprovince
         , city
     from {{ source('adventure_works_seeds','address') }}

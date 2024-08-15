@@ -1,5 +1,3 @@
-version: 2
-
 sources:
   - name: adventure_works_seeds
     database: flaviaadventureworks
@@ -7,16 +5,18 @@ sources:
       - name: address
         description: Street address information for customers, employees, and vendors.
         columns:
-          - name: addressidv
+          - name: addressid
             description: Primary key for Address records.
+            tests:
               - unique
               - not_null
 
       - name: billofmaterials
-        description: Items required to make bicycles and bicycle subassemblies. It identifies the heirarchical relationship between a parent product and its components.
+        description: Items required to make bicycles and bicycle subassemblies. It identifies the hierarchical relationship between a parent product and its components.
         columns:
           - name: billofmaterialsid
             description: Primary key for BillOfMaterials records.
+            tests:
               - unique
               - not_null
 
@@ -25,27 +25,31 @@ sources:
         columns:
           - name: businessentityid
             description: Primary key. Foreign key to BusinessEntity.BusinessEntityID.
-              - unique
+            tests:
               - not_null
+
           - name: addressid
             description: Primary key. Foreign key to Address.AddressID.
+            tests:
               - unique
-              - not_null              
+              - not_null    
+
           - name: addresstypeid
             description: Primary key. Foreign key to AddressType.AddressTypeID.
-              - not_null   
+            tests:
+              - not_null
 
       - name: countryregion
         description: Table with countries and their codes.
         columns:
           - name: countryregioncode
-            description: Primary key of countryregion
+            description: Primary key of countryregion.
             tests:
               - unique
               - not_null
 
       - name: customer
-        description: current customer information
+        description: Current customer information.
         columns:
           - name: customerid
             description: Primary key for customers records.
@@ -60,7 +64,7 @@ sources:
             description: Primary key for CreditCard records.
             tests:
               - unique
-              - not_null              
+              - not_null
 
       - name: location
         description: Product inventory and manufacturing locations.
@@ -69,7 +73,7 @@ sources:
             description: Primary key for Location records.
             tests:
               - unique
-              - not_null              
+              - not_null
 
       - name: person
         description: Human beings involved with AdventureWorks employees, customer contacts, and vendor contacts.
@@ -96,13 +100,13 @@ sources:
             description: Primary key for product category records.
             tests:
               - unique
-              - not_null              
+              - not_null
 
       - name: productsubcategory
         description: Product subcategories.
         columns:
           - name: productsubcategoryid
-            description: 	Primary key for ProductSubcategory records.
+            description: Primary key for ProductSubcategory records.
             tests:
               - unique
               - not_null
@@ -114,10 +118,11 @@ sources:
             description: Primary key for product category records.
             tests:
               - not_null
+
           - name: locationid
             description: Inventory location identification number. Foreign key to LocationID smallint Location.LocationID.
             tests:
-              - not_null                        
+              - not_null
 
       - name: salesorderdetail
         description: Individual products associated with a specific sales order.
@@ -129,7 +134,7 @@ sources:
               - not_null
 
       - name: salesorderheader
-        description: General sales order information
+        description: General sales order information.
         columns:
           - name: salesorderid
             description: Customer purchase order number reference.
@@ -142,6 +147,9 @@ sources:
         columns:
           - name: salesreasonid
             description: Primary key of sales reason order header sales reason table.
+            tests:
+              - unique
+              - not_null
 
       - name: salesreason
         description: This table contains information associated with the reason for sale.
@@ -159,7 +167,7 @@ sources:
             description: Primary key for SalesTerritory records.
             tests:
               - unique
-              - not_null                  
+              - not_null
 
       - name: stateprovince 
         description: This table contains information about state province.
@@ -177,4 +185,4 @@ sources:
             description: Primary key. Foreign key to Customer.BusinessEntityID.
             tests:
               - unique
-              - not_null                 
+              - not_null

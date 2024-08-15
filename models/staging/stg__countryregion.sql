@@ -1,7 +1,7 @@
 with
  source as (
     select
-      countryregioncode
+      countryregioncode as pk_countryregioncode
       , name as country_name
 
     from {{ source('adventure_works_seeds','countryregion') }}

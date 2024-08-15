@@ -2,6 +2,7 @@ with
  source as (
     select
       businessentityid as fk_customer
+      , salespersonid as fk_person
       , name as store_name
     from {{ source('adventure_works_seeds','store') }}
 )
