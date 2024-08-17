@@ -1,8 +1,8 @@
 with stg__businessentityaddress as (
     select
-        pk_person
+        fk_person
         , pk_address
-        , pk_addresstype
+        , fk_addresstype
     from {{ ref('stg__businessentityaddress') }}
 )
 
@@ -30,12 +30,12 @@ with stg__businessentityaddress as (
         , p.full_name
         , p.is_emailpromotion
         , bea.pk_address
-        , bea.pk_addresstype
+        , bea.fk_addresstype
         , addr.fk_stateprovince
         , addr.city
     from stg__person p
     left join stg__businessentityaddress bea
-        on p.pk_person = bea.pk_person
+        on p.pk_person = bea.fk_person
     left join stg__address addr
         on bea.pk_address = addr.pk_address
 )

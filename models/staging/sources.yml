@@ -11,6 +11,15 @@ sources:
               - unique
               - not_null
 
+      - name: addresstype
+        description: Types of addresses stored in the Address table.
+        columns:
+          - name: addresstypeid
+            description: 	Primary key for AddressType records.
+            tests:
+              - unique
+              - not_null              
+
       - name: billofmaterials
         description: Items required to make bicycles and bicycle subassemblies. It identifies the hierarchical relationship between a parent product and its components.
         columns:
