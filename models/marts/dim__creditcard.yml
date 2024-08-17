@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: dim__creditcard
+    columns:
+      - name: sk_creditcard
+        description: Primary key for CreditCard dimension.
+        tests:
+          - unique
+          - not_null
+
+      - name: fk_creditcardid
+        description: Primary key for CreditCard records.
+
+      - name: cardtype
+        description: Credit card name. 
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Vista', 'Distinguish', 'SuperiorCard', 'ColonialVoice']        

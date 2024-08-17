@@ -152,13 +152,17 @@ sources:
               - not_null
 
       - name: salesorderheadersalesreason
-        description: Make the relationship between salesorderheader and salesreason.
+        description: Cross-reference table mapping sales orders to sales reason codes.
         columns:
-          - name: salesreasonid
-            description: Primary key of sales reason order header sales reason table.
+          - name: salesorderid
+            description: 	Primary key. Foreign key to SalesOrderHeader.SalesOrderID.
             tests:
-              - unique
               - not_null
+          - name: salesreasonid
+            description: 	Primary key. Foreign key to SalesReason.SalesReasonID.
+            tests:
+              - not_null
+
 
       - name: salesreason
         description: This table contains information associated with the reason for sale.
