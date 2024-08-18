@@ -13,7 +13,7 @@ with source as (
             when status = 5 then 'Shipped'
             when status = 6 then 'Canceled'
         end as order_status
-        , cast(orderdate as date) as orderdate
+        , cast(orderdate as timestamp) as order_date
         , subtotal
         , taxamt
         , freight

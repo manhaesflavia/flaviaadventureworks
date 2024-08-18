@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: dim__salesreason
+    description: "Dimension table for sales reason"
+    columns:
+      - name: sk_salesreason
+        description: "Surrogate key for sales reason"
+        tests:
+          - unique
+          - not_null
+
+      - name: fk_salesorder
+        description: "Foreign key for sales order."
+
+      - name: salesreason_name
+        description: "Sales reason name."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Price', 'On Promotion', 'Manufacturer', 'Review', 'Quality', 'Other', 'Television Advertisement']
+
+      - name: reasontype
+        description: "Sales reason type."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Other', 'Promotion', 'Marketing']

@@ -9,8 +9,8 @@ with source as (
         , listprice
         , daystomanufacture
         , productline
-        , cast(sellstartdate as date) as sellstartdate
-        , cast(sellenddate as date) as sellenddate
+        , cast(sellstartdate as timestamp) as sell_startdate
+        , cast(sellenddate as timestamp) as sell_enddate
     from {{ source('adventure_works_seeds', 'product') }}
 )
 

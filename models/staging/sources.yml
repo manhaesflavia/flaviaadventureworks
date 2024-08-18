@@ -10,7 +10,7 @@ sources:
             tests:
               - unique
               - not_null
-
+              
       - name: addresstype
         description: Types of addresses stored in the Address table.
         columns:

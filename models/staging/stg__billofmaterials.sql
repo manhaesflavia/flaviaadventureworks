@@ -4,8 +4,8 @@ with
         billofmaterialsid as pk_billofmaterials
         , productassemblyid as fk_product
         , componentid
-        , cast(startdate as date) as startdate
-        , cast(enddate as date) as enddate
+        , cast(startdate as timestamp) as start__date
+        , cast(enddate as timestamp) as end__date
         , unitmeasurecode
         , bomlevel
         , perassemblyqty

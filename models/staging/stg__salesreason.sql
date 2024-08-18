@@ -1,7 +1,10 @@
 with source as (
     select
          salesreasonid as pk_salesreason
-         , name as salesreason_name
+         , case
+             when name = 'Television  Advertisement' then 'Television Advertisement'
+             else name
+         end as salesreason_name 
          , reasontype
     from {{ source('adventure_works_seeds','salesreason') }}
 )
