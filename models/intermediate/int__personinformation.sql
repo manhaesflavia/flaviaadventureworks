@@ -33,6 +33,7 @@ with stg__businessentityaddress as (
         , bea.fk_addresstype
         , addr.fk_stateprovince
         , addr.city
+        , row_number() over (partition by p.pk_person order by bea.fk_addresstype) as rn
     from stg__person p
     left join stg__businessentityaddress bea
         on p.pk_person = bea.fk_person
@@ -40,4 +41,15 @@ with stg__businessentityaddress as (
         on bea.pk_address = addr.pk_address
 )
 
-select * from int__personinformation
+select
+    pk_person
+    , persontype
+    , full_name
+    , is_emailpromotion
+    , pk_address
+    , fk_addresstype
+    , fk_stateprovince
+    , city
+from int__personinformation
+where rn = 1
+order by fk_addresstype

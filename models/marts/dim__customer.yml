@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: dim_customer  # Name of the dimension
+    description: "Dimension that stores customer information."
+    columns:
+      - name: customer_sk
+        description: "Surrogate key unique for each customer and address."
+        tests:
+          - unique  # Ensures the surrogate key is unique
+          - not_null  # Ensures the surrogate key has no null values
+
+      - name: pk_customer
+        description: "Primary key of the customer."
+        tests:
+          - not_null  # Ensures pk_customer has no null values
+
+      - name: fk_person
+        description: "Foreign key that links the customer to the person table."
+        tests:
+          - not_null  # Ensures fk_person has no null values
+
+      - name: fk_salesterritory
+        description: "Foreign key that links the customer to the sales territory table."
+        tests:
+          - not_null  # Ensures fk_salesterritory has no null values
+
+      - name: full_name
+        description: "Full name of the customer."
+        tests:
+          - not_null  # Ensures full_name has no null values
+
+      - name: city
+        description: "City where the customer resides."
+        tests:
+          - not_null  # Ensures city has no null values
+
+      - name: fk_addresstype
+        description: "Foreign key that identifies the address type."
+        tests:
+          - not_null  # Ensures fk_addresstype has no null values
+
+      - name: fk_stateprovince
+        description: "Foreign key that identifies the state or province of the customer."
+        tests:
+          - not_null  # Ensures fk_stateprovince has no null values
+
+      - name: is_emailpromotion
+        description: "Indicates whether the customer opted to receive email promotions."
+        tests:
+          - not_null  # Ensures is_emailpromotion has no null values
+
+      - name: persontype
+        description: "Type of person (e.g., Individual, Company)."
+        tests:
+          - not_null  # Ensures persontype has no null values
