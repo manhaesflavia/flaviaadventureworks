@@ -5,6 +5,7 @@ with source as (
         , shiptoaddressid as fk_address
         , territoryid as fk_salesterritory
         , creditcardid as fk_creditcard
+        , onlineorderflag as is_onlineorderflag
         , case
             when status = 1 then 'In process'
             when status = 2 then 'Approved'

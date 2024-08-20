@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: fct__orderdetailbystore
+    description: "Tabela que une informações de vendas, clientes, produtos e lojas, com substituição de valores em branco na coluna store_name por 'Online Store'."
+    columns:
+      - name: pk_salesorder
+        description: "Identificador único da ordem de venda."
+      - name: order_date
+        description: "Data da ordem de venda."
+      - name: is_onlineorderflag
+        description: "Indicador se a ordem de venda foi feita online."
+      - name: store_name
+        description: "Nome da loja onde a venda foi realizada. Substituído por 'Online Store' para vendas online."
+      - name: sell_startdate
+        description: "Data de início da venda do produto."
+      - name: sell_enddate
+        description: "Data de término da venda do produto."
+      - name: product_name
+        description: "Nome do produto vendido."
+      - name: orderqty
+        description: "Quantidade de produtos vendidos na ordem."
+      - name: fk_product
+        description: "Chave estrangeira referenciando o produto vendido."

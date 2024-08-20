@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: dim_calendar
+    columns:
+      - name: metric_date
+        description: "Metric date"
+        tests:
+          - not_null
+
+      - name: dayofmonth
+        description: Day of metric_date.
+
+      - name: month
+        description: Month of metric_date.
+
+      - name: year
+        description: Year of metric_date.
+
+      - name: quarter
+        description: Quarter of metric_date.
+
+      - name: dayofyear
+        description: Dayofyear of metric_date.
+
+      - name: isoweek
+        description: Isoweek of metric_date.
+
+      - name: week
+        description: Week of the year of metric date.
+
+      - name: dayofweek
+        description: Dayofweek of metric_date.
+
+      - name: week
+        description: Week of metric_date.
+
+      - name: fullmonth
+        description: Full name of the month of the year.
+
+      - name: week_year
+        description: Week of the year and year of metric date, example S48-2021.
+
+      - name: month_year
+        description: Month of the year and year of metric date, example Jan-2020.
+
+      - name: quarter_year
+        description: Quarter of the year and year of metric date, example T1-2020.
