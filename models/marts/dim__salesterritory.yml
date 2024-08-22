@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: dim__salesterritory
+    description: "Dimension table for Sales Territories, combining data from sales orders and sales territory details."
+    columns:
+      - name: sk_salesterritory
+        description: "Surrogate key for the Sales Territory."
+        tests:
+          - unique
+          - not_null
+      - name: fk_salesterritory
+        description: "Foreign key for Sales Territory from the sales orders."
+      - name: pk_salesterritory
+        description: "Primary key for the Sales Territory from the source."
+      - name: name
+        description: "Name of the Sales Territory."
+      - name: countryregioncode
+        description: "Country/Region code associated with the Sales Territory."
+      - name: group
+        description: "Group name for the Sales Territory."
+      - name: salesytd
+        description: "Year to date sales for the Sales Territory."
+      - name: saleslastyear
+        description: "Sales from the last year for the Sales Territory."
+      - name: costytd
+        description: "Year to date cost for the Sales Territory."
+      - name: costlastyear
+        description: "Cost from the last year for the Sales Territory."

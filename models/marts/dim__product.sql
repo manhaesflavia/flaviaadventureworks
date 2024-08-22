@@ -27,6 +27,7 @@ product_with_surrogate_key as (
         {{ dbt_utils.generate_surrogate_key(
             ['pk_product']
         ) }} as sk_product
+        , pk_product
         , product_name
         , safetystocklevel
         , reorderpoint
