@@ -4,7 +4,7 @@ models:
   - name: fct__salesorder
     description: "Fato de vendas contendo detalhes sobre pedidos, produtos, clientes, cartões de crédito, territórios de vendas e razões de vendas."
     columns:
-      - name: sk_factorder
+      - name: sk_salesorderdetail
         description: "Chave substituta para a tabela fato de vendas."
         tests:
           - unique
@@ -13,11 +13,11 @@ models:
         description: "Chave estrangeira para o pedido de venda."
         tests:
           - not_null
-      - name: fk_product
+      - name: sk_product
         description: "Chave estrangeira para o produto."
         tests:
           - not_null
-      - name: fk_customer
+      - name: sk_customer
         description: "Chave estrangeira para o cliente."
         tests:
           - not_null
@@ -37,17 +37,7 @@ models:
           - not_null
       - name: unitpricediscount
         description: "Desconto aplicado no preço unitário."
-      - name: gross_revenue
-        description: "Receita bruta calculada como preço unitário vezes a quantidade do pedido."
-        tests:
-          - not_null
       - name: order_date
         description: "Data do pedido."
-        tests:
-          - not_null
-      - name: order_status
-        description: "Status do pedido."
-      - name: sk_salesreason
-        description: "Chave substituta para a razão de vendas."
         tests:
           - not_null

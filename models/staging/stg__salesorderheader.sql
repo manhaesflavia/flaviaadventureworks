@@ -18,6 +18,7 @@ with source as (
         , subtotal
         , taxamt
         , freight
+        , totaldue
     from {{ source('adventure_works_seeds', 'salesorderheader') }}
 )
 

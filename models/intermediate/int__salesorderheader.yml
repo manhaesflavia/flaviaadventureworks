@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: int__salesorder
+    description: "Intermediate table that combines sales order detail and sales order header, including surrogate key and total order value calculation per product."
+    columns:
+      - name: sk_salesorderdetail
+        description: "Surrogate key generated from the combination of pk_salesorderdetail and fk_salesorder."
+        tests:
+          - unique
+          - not_null
+
+      - name: pk_salesorderdetail
+        description: "Primary key of the sales order detail table."
+        tests:
+          - not_null
+
+      - name: fk_salesorder
+        description: "Foreign key that links sales order detail to sales order header."
+        tests:
+          - not_null
+
+      - name: fk_product
+        description: "Foreign key identifying the product associated with the sales order."
+        tests:
+          - not_null
+
+      - name: orderqty
+        description: "Quantity of the product in the sales order."
+        tests:
+          - not_null
+
+      - name: unitprice
+        description: "Unit price of the product in the sales order."
+        tests:
+          - not_null
+
+      - name: unitpricediscount
+        description: "Discount applied to the unit price of the product."
+        tests:
+          - not_null
+
+      - name: pk_salesorder
+        description: "Primary key of the sales order header table."

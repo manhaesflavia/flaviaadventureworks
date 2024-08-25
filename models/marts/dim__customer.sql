@@ -1,33 +1,47 @@
-with stg_customer as (
-    select 
-        *
-    from {{ ref('stg__customer') }}
-)
+-- 1. Agregar informações em stg__customer e stg__salesorderheader
+with customer_orders as (
+    select
+        c.pk_customer,
+        c.fk_person
+    from {{ ref('stg__customer') }} c
+    right join {{ ref('stg__salesorderheader') }} soh
+        on c.pk_customer = soh.fk_customer
+    where soh.fk_customer is not null
+    group by c.pk_customer, c.fk_person  -- Agregando por cliente
+),
 
-, int_personinformation as (
-    select 
-        *
-    from {{ ref('int__personinformation') }}
-)
+-- 2. Juntar o resultado anterior com int__personinformation
+customer_person_info as (
+    select
+        co.pk_customer,
+        co.fk_person,
+        pi.full_name,
+        pi.city,
+        pi.fk_addresstype,
+        pi.fk_stateprovince,
+        pi.is_emailpromotion,
+        pi.persontype
+    from customer_orders co
+    left join {{ ref('int__personinformation') }} pi
+        on co.fk_person = pi.pk_person
+),
 
-, transformed as (
+-- 3. Gerar a surrogate key
+transformed as (
     select
         {{ dbt_utils.generate_surrogate_key(
-            ['stg_customer.pk_customer', 'int_personinformation.fk_addresstype']
-        ) }} as sk_customer
-        , stg_customer.pk_customer
-        , stg_customer.fk_person
-        , stg_customer.fk_salesterritory
-        , int_personinformation.full_name
-        , int_personinformation.city
-        , int_personinformation.fk_addresstype
-        , int_personinformation.fk_stateprovince
-        , int_personinformation.is_emailpromotion
-        , int_personinformation.persontype
-    from stg_customer
-    left join int_personinformation 
-        on stg_customer.fk_person = int_personinformation.pk_person
+            ['pk_customer']
+        ) }} as sk_customer,
+        pk_customer,
+        fk_person,
+        full_name,
+        city,
+        fk_addresstype,
+        is_emailpromotion,
+        persontype
+    from customer_person_info
 )
 
+-- 4. Selecionar os resultados finais
 select *
 from transformed

@@ -1,96 +1,78 @@
-with customers as (
+with product_dim as (
     select
-        sk_customer
-        , pk_customer
-    from {{ ref('dim__customer') }}
+        dp.pk_product,
+        dp.sk_product
+    from {{ ref('dim__product') }} dp
 ),
 
-creditcards as (
+-- 1.2. Dimensão Cliente
+customer_dim as (
     select
-        sk_creditcard
-        , fk_creditcard
-    from {{ ref('dim__creditcard') }}
+        dc.pk_customer,
+        dc.sk_customer
+    from {{ ref('dim__customer') }} dc
 ),
 
-products as (
+-- 1.3. Dimensão Sales Reason
+salesreason_dim as (
     select
-        sk_product
-        , pk_product
-    from {{ ref('dim__product') }}
+        dsr.fk_salesorder,
+        dsr.sk_salesreason
+    from {{ ref('dim__salesreason') }} dsr
 ),
 
-sales_reasons as (
+-- 1.4. Dimensão Sales Territory
+salesterritory_dim as (
     select
-        sk_salesreason
-        , fk_salesorder
-        , salesreason_name
-    from {{ ref('dim__salesreason') }}
+        dst.pk_salesterritory,
+        dst.sk_salesterritory
+    from {{ ref('dim__salesterritory') }} dst
 ),
 
-salesterritory as (
+-- 1.5. Dimensão Credit Card
+creditcard_dim as (
     select
-        sk_salesterritory
-        , fk_salesterritory
-    from {{ ref('dim__salesterritory') }}
+        dcc.fk_creditcard,
+        dcc.sk_creditcard
+    from {{ ref('dim__creditcard') }} dcc
 ),
 
-salesorderdetails as (
-    select
-        stg_salesorderdetail.fk_salesorder
-        , stg_salesorderdetail.pk_salesorderdetail
-        , products.sk_product
-        , stg_salesorderdetail.fk_product
-        , stg_salesorderdetail.orderqty
-        , stg_salesorderdetail.unitprice
-        , stg_salesorderdetail.unitpricediscount
-        , stg_salesorderdetail.unitprice * stg_salesorderdetail.orderqty as gross_revenue
-    from {{ ref('stg__salesorderdetail') }} as stg_salesorderdetail
-    left join products on stg_salesorderdetail.fk_product = products.pk_product -- Ajuste no join
-),
-
-salesorderheaders as (
-    select
-        stg_salesorderheader.pk_salesorder
-        , customers.sk_customer
-        , stg_salesorderheader.fk_customer
-        , stg_salesorderheader.fk_creditcard
-        , creditcards.sk_creditcard
-        , salesterritory.sk_salesterritory
-        , stg_salesorderheader.order_date
-        , stg_salesorderheader.order_status
-    from {{ ref('stg__salesorderheader') }} as stg_salesorderheader
-    left join customers on stg_salesorderheader.fk_customer = customers.pk_customer
-    left join creditcards on stg_salesorderheader.fk_creditcard = creditcards.fk_creditcard
-    left join salesterritory on stg_salesorderheader.fk_salesterritory = salesterritory.fk_salesterritory
-),
-
-final as (
-    select
-        {{ dbt_utils.generate_surrogate_key (
-            ['salesorderdetails.fk_salesorder', 'salesorderdetails.pk_salesorderdetail']
-        ) }} as sk_factorder
-        , salesorderdetails.fk_salesorder
-        , salesorderdetails.sk_product as fk_product
-        , salesorderheaders.fk_customer
-        , salesorderheaders.fk_creditcard
-        , salesorderheaders.sk_salesterritory
-        , salesorderdetails.unitprice
-        , salesorderdetails.orderqty
-        , salesorderdetails.unitpricediscount
-        , salesorderdetails.gross_revenue
-        , salesorderheaders.order_date
-        , salesorderheaders.order_status
-        , sales_reasons.sk_salesreason -- Adicionando a SK da razão de vendas
-        , case
-            when sales_reasons.salesreason_name is null then 'Unknown'
-            else sales_reasons.salesreason_name
-        end as sales_reason_name          
-    from salesorderdetails
-    left join salesorderheaders 
-        on salesorderdetails.fk_salesorder = salesorderheaders.pk_salesorder
-    left join sales_reasons 
-        on salesorderdetails.fk_salesorder = sales_reasons.fk_salesorder
+-- 2. Unir as dimensões com a tabela intermediária, garantindo unicidade
+final_salesorder as (
+    select distinct
+        io.sk_salesorderdetail,
+        io.pk_salesorderdetail,
+        io.fk_salesorder,
+        prod.sk_product,
+        io.orderqty,
+        io.unitprice,
+        io.unitpricediscount,
+        io.pk_salesorder,
+        cust.sk_customer,
+        io.fk_address,
+        terr.sk_salesterritory,
+        card_.sk_creditcard,
+        io.is_onlineorderflag,
+        io.order_status,
+        io.order_date,
+        io.subtotal,
+        io.taxamt,
+        io.freight,
+        io.total_order_value,
+        reason.sk_salesreason
+    from {{ ref('int__salesorderheader') }} io
+    left join product_dim prod
+        on io.fk_product = prod.pk_product
+    left join customer_dim cust
+        on io.fk_customer = cust.pk_customer
+    left join salesreason_dim reason
+        on io.fk_salesorder = reason.fk_salesorder
+    left join salesterritory_dim terr
+        on io.fk_salesterritory = terr.pk_salesterritory
+    left join creditcard_dim card_
+        on io.fk_creditcard = card_.fk_creditcard
 )
 
+-- 3. Selecionar os resultados finais para a tabela fato
 select *
-from final
+from final_salesorder
