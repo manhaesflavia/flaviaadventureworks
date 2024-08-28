@@ -11,9 +11,9 @@ with salesorderheader_customer as (
         {{ ref('stg__customer') }} as c 
     on 
         so.fk_customer = c.pk_customer
-),
+)
 
-salesorderdetail_product as (
+, salesorderdetail_product as (
     select 
         sod.fk_salesorder
         , sod.orderqty
@@ -27,9 +27,9 @@ salesorderdetail_product as (
         {{ ref('stg__product') }} as p 
     on 
         sod.fk_product = p.pk_product
-),
+)
 
-store_info as (
+, store_info as (
     select 
         s.fk_customer
         , s.store_name
@@ -40,11 +40,7 @@ store_info as (
 select 
     sc.pk_salesorder
     , sc.order_date
-    , sc.is_onlineorderflag
-    , case
-        when si.store_name is null then 'Online Store'
-        else si.store_name
-    end as storename       
+    , sc.is_onlineorderflag      
     , sp.sell_startdate
     , sp.sell_enddate
     , sp.product_name

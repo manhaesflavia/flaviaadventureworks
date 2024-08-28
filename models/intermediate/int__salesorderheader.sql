@@ -18,6 +18,7 @@ with int__salesorder as (
         , oh.is_onlineorderflag
         , oh.order_status
         , oh.order_date
+        , oh.totaldue
         , oh.subtotal
         , oh.taxamt
         , oh.freight
