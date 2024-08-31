@@ -1,20 +1,14 @@
-version: 2
-
 models:
   - name: dim__salesreason
-    description: "Dimension table for sales reason"
+    description: "This dimension table contains information about the reasons associated with sales orders, facilitating the analysis of aggregated reasons for each sales order."
     columns:
-      - name: sk_salesreason
-        description: "Surrogate key for sales reason"
+      - name: fk_salesorder
+        description: "Primary key connecting to the sales order, ensuring the uniqueness of each entry."
         tests:
           - unique
           - not_null
 
-      - name: fk_salesorder
-        description: "Foreign key for sales order."
-
-      - name: reasontype
-        description: "Sales reason type."
+      - name: reason_name_aggregated
+        description: "Aggregated reasons for sales, providing a summary of various reasons associated with each sales order."
         tests:
-          - dbt_expectations.expect_column_values_to_be_in_set:
-              value_set: ['Other', 'Promotion', 'Marketing']
+          - not_null

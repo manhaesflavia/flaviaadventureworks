@@ -163,6 +163,14 @@ sources:
             tests:
               - not_null
 
+      - name: salesperson
+        description: Sales representative current information.
+        columns:
+          - name: businessentityid
+            description: 	Primary key for SalesPerson records. Foreign key to Employee.BusinessEntityID
+            tests:
+              - unique
+              - not_null
 
       - name: salesreason
         description: This table contains information associated with the reason for sale.
@@ -199,3 +207,5 @@ sources:
             tests:
               - unique
               - not_null
+
+
