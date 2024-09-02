@@ -6,6 +6,7 @@ with source as (
         , territoryid as fk_salesterritory
         , creditcardid as fk_creditcard
         , onlineorderflag as is_onlineorderflag
+        , salespersonid as fk_salesperson
         , case
             when status = 1 then 'In process'
             when status = 2 then 'Approved'

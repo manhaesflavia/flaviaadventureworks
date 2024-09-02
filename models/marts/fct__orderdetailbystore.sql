@@ -1,101 +1,168 @@
-with salesorderheader_customer as (
-    select 
+-- with merged_data as (
+--     select
+--         so.sk_salesorderdetail,
+--         so.pk_salesorderdetail,
+--         so.pk_salesorder,
+--         so.fk_product,
+--         so.orderqty,
+--         so.is_onlineorderflag,
+--         s.store_name,
+--         so.fk_salesterritory,
+--         so.order_date
+--     from 
+--         {{ ref('int__salesorderheader') }} as so
+--     left join 
+--         {{ ref('stg__store') }} as s 
+--     on 
+--         so.fk_salesperson = s.fk_person
+-- ),
+
+-- ranked_data as (
+--     select
+--         *,
+--         row_number() over (partition by sk_salesorderdetail order by pk_salesorderdetail) as rn
+--     from 
+--         merged_data
+-- ),
+
+-- -- Join with dim__product to include product details
+-- final_data as (
+--     select
+--         rd.sk_salesorderdetail,
+--         rd.pk_salesorderdetail,
+--         rd.pk_salesorder,
+--         rd.fk_product,
+--         rd.orderqty,
+--         rd.is_onlineorderflag,
+--         rd.store_name,
+--         rd.fk_salesterritory,
+--         rd.order_date,
+--         p.product_name,
+--         p.sell_startdate,
+--         p.sell_enddate
+--     from 
+--         ranked_data rd
+--     left join 
+--         {{ ref('dim__product') }} p 
+--     on 
+--         rd.fk_product = p.pk_product
+--     where 
+--         rd.rn = 1
+-- )
+
+-- -- Select final columns for the fact table
+-- select
+--     sk_salesorderdetail,
+--     pk_salesorderdetail,
+--     pk_salesorder,
+--     fk_product,
+--     orderqty,
+--     is_onlineorderflag,
+--     store_name,
+--     fk_salesterritory,
+--     order_date,
+--     product_name,
+--     sell_startdate,
+--     sell_enddate
+-- from 
+--     final_data
+
+-- models/fct_salesorderdetail.sql
+
+with merged_data as (
+    select
+        so.sk_salesorderdetail,
+        so.pk_salesorderdetail,
         so.pk_salesorder,
-        so.order_date,
+        so.fk_product,
+        so.orderqty,
         so.is_onlineorderflag,
-        so.fk_customer,
-        c.pk_customer
+        s.store_name,
+        so.fk_salesterritory,
+        so.order_date
     from 
-        {{ ref('stg__salesorderheader') }} as so
+        {{ ref('int__salesorderheader') }} as so
     left join 
-        {{ ref('stg__customer') }} as c 
+        {{ ref('stg__store') }} as s 
     on 
-        so.fk_customer = c.pk_customer
-)
+        so.fk_salesperson = s.fk_person
+),
 
-, salesorderdetail_product as (
-    select 
-        sod.fk_salesorder,
-        sod.orderqty,
-        sod.fk_product,
-        p.sell_startdate,
-        p.sell_enddate,
+ranked_data as (
+    select
+        *,
+        row_number() over (partition by sk_salesorderdetail order by pk_salesorderdetail) as rn
+    from 
+        merged_data
+),
+
+-- Join with dim__product to include product details
+product_data as (
+    select
+        rd.sk_salesorderdetail,
+        rd.pk_salesorderdetail,
+        rd.pk_salesorder,
+        rd.fk_product,
+        rd.orderqty,
+        rd.is_onlineorderflag,
+        rd.store_name,
+        rd.fk_salesterritory,
+        rd.order_date,
         p.product_name,
-        p.finishedgoodsflag,
-        p.standardcost,
-        p.productnumber
+        p.sell_startdate,
+        p.sell_enddate
     from 
-        {{ ref('stg__salesorderdetail') }} as sod
+        ranked_data rd
     left join 
-        {{ ref('stg__product') }} as p 
+        {{ ref('dim__product') }} p 
     on 
-        sod.fk_product = p.pk_product
-)
+        rd.fk_product = p.pk_product
+    where 
+        rd.rn = 1
+),
 
-, store_info as (
-    select 
-        s.fk_customer,
-        s.store_name
+-- Join with dim__salesterritory to include sales territory details
+final_data as (
+    select
+        pd.sk_salesorderdetail,
+        pd.pk_salesorderdetail,
+        pd.pk_salesorder,
+        pd.fk_product,
+        pd.orderqty,
+        pd.is_onlineorderflag,
+        pd.store_name,
+        pd.fk_salesterritory,
+        pd.order_date,
+        pd.product_name,
+        pd.sell_startdate,
+        pd.sell_enddate,
+        t.territory_name,
+        t.fk_countryregioncode,
+        t.territory_group
     from 
-        {{ ref('stg__store') }} as s
-)
-
-, order_details as (
-    select 
-        sc.pk_salesorder,
-        sc.order_date,
-        sc.is_onlineorderflag,
-        sc.fk_customer,
-        si.store_name,
-        sp.sell_startdate,
-        sp.sell_enddate,
-        sp.product_name,
-        sp.finishedgoodsflag,
-        sp.standardcost,
-        sp.productnumber,
-        sp.orderqty
-    from 
-        salesorderheader_customer as sc
+        product_data pd
     left join 
-        salesorderdetail_product as sp 
+        {{ ref('dim__salesterritory') }} t 
     on 
-        sc.pk_salesorder = sp.fk_salesorder
-    left join 
-        store_info as si 
-    on 
-        sc.fk_customer = si.fk_customer
+        pd.fk_salesterritory = t.pk_salesterritory
 )
 
-, aggregated_demand as (
-    select 
-        si.store_name,
-        sp.product_name,
-        sp.finishedgoodsflag,
-        sp.standardcost,
-        sp.productnumber,
-        extract(year from sc.order_date) as year,
-        extract(month from sc.order_date) as month,
-        sum(sp.orderqty) as total_qty
-    from 
-        order_details as od
-    group by 
-        si.store_name,
-        sp.product_name,
-        sp.finishedgoodsflag,
-        sp.standardcost,
-        sp.productnumber,
-        year,
-        month
-)
-
-select 
-    si.store_name,
-    sp.product_name,
-    sp.finishedgoodsflag,
-    sp.standardcost,
-    sp.productnumber,
-    total_qty,
-    year,
-    month
+-- Final selection for the fact table
+select
+    sk_salesorderdetail,
+    pk_salesorderdetail,
+    pk_salesorder,
+    fk_product,
+    orderqty,
+    is_onlineorderflag,
+    store_name,
+    fk_salesterritory,
+    order_date,
+    product_name,
+    sell_startdate,
+    sell_enddate,
+    territory_name,
+    fk_countryregioncode,
+    territory_group
 from 
-    aggregated_demand
+    final_data

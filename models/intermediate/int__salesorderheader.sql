@@ -11,6 +11,7 @@ with int__salesorder as (
         , od.unitprice
         , od.unitpricediscount
         , oh.pk_salesorder
+        , oh.fk_salesperson        
         , oh.fk_customer
         , oh.fk_address
         , oh.fk_salesterritory
